@@ -1,0 +1,127 @@
+﻿@model Inventory.Models.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-md-7 p-3">
+            <img class="w-100" src="/images/image.jpg" />
+        </div>
+        <div class="col-md-5 p-3">
+            <h4>Dell 15 Inch MacBook Air</h4>
+            <p class="text-muted bodySmall my-1">
+                Category: Laptop
+            </p>
+            <p class="text-muted bodySmall my-1">
+                Brand: Apple
+            </p>
+            <p class="bodySmall mb-2 mt-1">
+                Dell 15 Inch MacBook Air Dell 15 Inch MacBook Air Dell 15 Inch MacBook Air Dell 15 Inch MacBook Air
+            </p>
+            <p>
+                Price: $500.00
+            </p>
+
+            <div class="row">
+                <div class="col-4 p-2">
+                    <label class="bodySmall">Size</label>
+                    <select class="form-control my-2 form-select">
+                        <option value="">Size</option>
+                        <option value={item}>{item}</option>;
+                    </select>
+                </div>
+                <div class="col-4 p-2">
+                    <label class="bodySmall">Color</label>
+                    <select  class="form-control my-2 form-select">
+                        <option value="">Color</option>
+                        
+                        <option value={item}>{item}</option>;
+                        
+                    </select>
+                </div>
+                <div class="col-4 p-2">
+                    <label class="bodySmall">Quantity</label>
+                    <div class="input-group my-2">
+                        <button onClick={decrementQty}
+                                class="btn btn-outline-secondary">
+                            -
+                        </button>
+                        <input value="1"
+                               type="text"
+                               class="form-control bg-light text-center"
+                               readOnly />
+                        <button onClick={incrementQty}
+                                class="btn btn-outline-secondary">
+                            +
+                        </button>
+                    </div>
+                </div>
+                <div class="col-4 p-2">
+                    <button class="btn w-100 btn-success">Add to Cart</button>
+                </div>
+                <div class="col-4 p-2">
+                    <button class="btn w-100 btn-success">Add to Wish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active"
+                        id="Special-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#Special-tab-pane"
+                        type="button"
+                        role="tab"
+                        aria-controls="Special-tab-pane"
+                        aria-selected="true">
+                    Specifications
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link"
+                        id="Review-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#Review-tab-pane"
+                        type="button"
+                        role="tab"
+                        aria-controls="Review-tab-pane"
+                        aria-selected="false">
+                    Review
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active"
+                 id="Special-tab-pane"
+                 role="tabpanel"
+                 aria-labelled-by="Special-tab"
+                 tabIndex="0">
+                <p>Product specifications goes here ... </p>
+                <p>Product specifications goes here ... </p>
+                <p>Product specifications goes here ... </p>
+            </div>
+            <div class="tab-pane fade"
+                 id="Review-tab-pane"
+                 role="tabpanel"
+                 aria-labelledby="Review-tab"
+                 tabIndex="0">
+                <p>all reviews goes here ... </p>
+                <p>all reviews goes here ... </p>
+                <p>all reviews goes here ... </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
