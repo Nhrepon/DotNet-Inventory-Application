@@ -2,12 +2,11 @@
 
 namespace Inventory.Controllers
 {
-    public class BlogController : Controller
+    public class CategoryController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
-
     }
 }

@@ -1,0 +1,41 @@
+﻿@model Inventory.Models.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h3>All brands</h3>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        @{
+            for (var i=0; i<10; i++)
+            {
+                <div class="col-sm-3">
+                    <div class="card shadow my-3">
+                        <img class="card-img" src="/images/image.jpg" />
+                        <div class="card-body">
+                            <a asp-action="Details" class="card-title text-black text-decoration-none"><h5 class="fs-6">Dell 15 Inch MacBook Air (2023) </h5></a>
+                            <div class="card-text">Price: <del class="text-danger">$70.00</del> $50.00</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+<hr />
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
