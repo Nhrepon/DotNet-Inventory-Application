@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Inventory.Models.Brand>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brand List</title>
+</head>
+<body>
+    <h1>Brand List</h1>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Add
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header px-4">
+        <h5 class="modal-title" id="staticBackdropLabel">Add Brand data</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form>
+            <label for="BrandName">Brand Name</label>
+            <input class="form-control" id="BrandName" type="text" name="BrandName" />
+            <label for="BrandDesc">Brand Description</label>
+            <input class="form-control" id="BrandDesc" type="text" name="BrandDesc" />
+            <label for="BrandImg">Brand Image</label>
+            <input class="form-control" id="BrandImg" type="text" name="BrandImg" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button onclick="saveData()" type="button" class="btn btn-success">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+    <hr>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Brand Name</th>
+                <th>Brand Image</th>
+                <th>Brand Description</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var brand in Model)
+            {
+                <tr>
+                    <td>@brand.Id</td>
+                    <td>@brand.BrandName</td>
+                    <td><img src="@brand.BrandImg" alt="@brand.BrandName" width="100" /></td>
+                    <td>@brand.BrandDesc</td>
+                    <td>@brand.CreatedAt</td>
+                    <td>@brand.UpdatedAt</td>
+                    <td>
+                        <i class="bi bi-pencil-square"></i>
+                        <i class="bi bi-trash"></i>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<script>
+    async function saveData() {
+        var brandName = document.getElementById("BrandName").value;
+        var brandDesc = document.getElementById("BrandDesc").value;
+        var brandImg = document.getElementById("BrandImg").value;
+
+        let data={
+            "BrandName":brandName,
+            "BrandDesc":brandDesc,
+            "BrandImg":brandImg
+        }
+        
+        try {
+            if(brandName == ""){
+                errorToast("Brand name is required");
+            }else{
+                await axios.post("http://localhost:5258/brand", data, { headers: { 'Content-Type': 'application/json' } });
+                successToast("Brand Added Successfully");
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error saving brand data:', error);
+        }
+    }
+</script>
+
+</body>
+</html>
