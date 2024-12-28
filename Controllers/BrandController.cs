@@ -38,7 +38,9 @@ namespace Inventory.Controllers
                                 var brand = new Brand{ Id = reader.IsDBNull(reader.GetOrdinal("Id")) ? 0 : reader.GetInt32(reader.GetOrdinal("Id")), 
                                 BrandName = reader.IsDBNull(reader.GetOrdinal("BrandName")) ? string.Empty : reader.GetString(reader.GetOrdinal("BrandName")), 
                                 BrandImg = reader.IsDBNull(reader.GetOrdinal("BrandImg")) ? string.Empty : reader.GetString(reader.GetOrdinal("BrandImg")), 
-                                BrandDesc = reader.IsDBNull(reader.GetOrdinal("BrandDesc")) ? string.Empty : reader.GetString(reader.GetOrdinal("BrandDesc")) };
+                                BrandDesc = reader.IsDBNull(reader.GetOrdinal("BrandDesc")) ? string.Empty : reader.GetString(reader.GetOrdinal("BrandDesc")),
+                                CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+                                UpdatedAt = reader.GetDateTime(reader.GetOrdinal("UpdatedAt")) };
                                 
                                 // {
                                 //     Id = reader.GetInt32(reader.GetOrdinal("Id")),
