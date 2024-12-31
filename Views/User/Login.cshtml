@@ -1,0 +1,54 @@
+@* @model Inventory.Models.User; *@
+
+@{
+    ViewBag.Title = "Login";
+}
+
+
+<div class="container">
+    <div class="row ">
+        <div class="col-12 col-md-6 col-xl-4 mx-auto">
+            <div class="card d-flex align-items-center justify-content-center p-5 my-3 shadow-lg ">
+                <div class="d-flex justify-content-center align-content-center">
+                    <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
+                        <input name="email" id="email" class="form-control" type="email" placeholder="Email" />
+                        <input name="password" id="password" class="form-control rounded" type="password" placeholder="Password" />
+
+                        <button onclick="login()" class="btn btn-success mb-3">Login</button>
+                        <br>
+                        <div class="text-center">Don't have an account? <a class="text-success" href="@Url.Action("Registration","User")">Registration</a></div>
+                        <div>
+                            {
+                                
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    async function login() {
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+        if (email.length == 0) {
+            errorToast('Please enter email');
+
+        } else if (password.length == 0) {
+            errorToast('Please enter password');
+        } else {
+            let response = await axios.post('@Url.Action("Login","User")', { email: email, password: password });
+
+            if (response.data['status'] == 'success') {
+                successToast("Login success!");
+                //window.location.href = '@Url.Action("Dashboard","User")';
+            } else {
+                errorToast("Login failed");
+            }
+        }
+    }</script>
+

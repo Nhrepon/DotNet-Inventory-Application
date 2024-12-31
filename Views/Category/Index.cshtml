@@ -1,0 +1,47 @@
+
+@model List<Category>
+@{
+    ViewData["Title"] = "Category list";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-12">
+        <a class="btn btn-success" asp-controller="Category" asp-action="Index">Add category</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Created date</th>
+                    <th>Updated date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var category in Model){
+                    <tr>
+                        <td>@category.Id</td>
+                        <td>@category.CategoryName</td>
+                        <td>@category.CategoryDesc</td>
+                        <td>@category.CategoryImage</td>
+                        <td>@category.CreatedAt</td>
+                        <td>@category.UpdatedAt</td>
+                        <td>
+                            <i class="bi bi-pencil"></i>
+                            <i class="bi bi-trash"></i>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

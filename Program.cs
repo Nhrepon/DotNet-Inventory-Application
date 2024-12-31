@@ -1,4 +1,5 @@
 using System.Configuration;
+using Inventory.Database;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,14 +12,20 @@ builder.Services.AddControllersWithViews();
 
 
 // Add database services
+builder.Services.AddDbContext<AppDbContext>(options => {
+    var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
+    options.UseSqlServer(connectionString);
+});
 
-// Configuration setup
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .Build();
 
-builder.Services.AddSingleton<IConfiguration>(configuration);
+
+
+// // Configuration setup
+// var configuration = new ConfigurationBuilder()
+//     .SetBasePath(Directory.GetCurrentDirectory())
+//     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+//     .Build();
+// builder.Services.AddSingleton<IConfiguration>(configuration);
 
 
 var app = builder.Build();
