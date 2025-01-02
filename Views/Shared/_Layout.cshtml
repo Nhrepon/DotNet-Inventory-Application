@@ -58,13 +58,18 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-success bottom-0 position-absolute">
-        <div class="container">
-            <div class="row text-center text-light">
-                <p>Copyright &copy; @DateTime.Now.ToString("yyyy") - Inventory - <a class="text-light" asp-area="" asp-controller="Home" asp-action="index">Home</a></p>
-            </div>
-        </div>
+    <div class="footer-top">
+        @Html.Partial("FooterTop")
+    </div>
+
+    @* @RenderSection("Footer"); *@
+    @* @{await Html.PartialAsync("Footer");} *@
+    <footer class="footer bg-success bottom-0 position-absolute">
+        @Html.Partial("Footer")  
     </footer>
+
+
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

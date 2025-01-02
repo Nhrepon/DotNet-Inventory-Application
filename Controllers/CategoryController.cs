@@ -52,7 +52,7 @@ namespace Inventory.Controllers
                 return View(categoryDto);
             }
 
-            const long maxSize = 10 * 1024 * 1024; // 10 MB
+            const long maxSize = 5 * 1024 * 1024; // 5 MB
                 if(categoryDto.CategoryImage != null && categoryDto.CategoryImage.Length > 0 && categoryDto.CategoryImage.Length < maxSize){
                 Console.WriteLine("Image is not null");
             
@@ -109,6 +109,7 @@ namespace Inventory.Controllers
             if(category == null){
                 return RedirectToAction("Index", "Category");
             }
+            
             var categoryDto = new CategoryDto(){
                 
                 CategoryName = category.CategoryName,
@@ -132,12 +133,45 @@ namespace Inventory.Controllers
                 return RedirectToAction("Index", "Category");
             }
 
+            if (Context.category.Any(c => c.CategoryName == categoryDto.CategoryName && c.Id != id))
+                {
+                    ModelState.AddModelError("CategoryName", "Category Name already exists");
+                    ViewData["Id"] = category.Id;
+                    ViewData["CategoryImage"] = category.CategoryImage;
+                    ViewData["CreatedAt"] = category.CreatedAt.ToString("dd/MM/yyyy");
+                    ViewData["UpdatedAt"] = category.UpdatedAt.ToString("dd/MM/yyyy");
+                    return View(categoryDto);
+                }
+
+
             if(!ModelState.IsValid){
                 ViewData["Id"] = category.Id;
                 ViewData["CategoryImage"] = category.CategoryImage;
                 ViewData["CreatedAt"] = category.CreatedAt.ToString("dd/MM/yyyy");
                 ViewData["UpdatedAt"] = category.UpdatedAt.ToString("dd/MM/yyyy");
                 return View(categoryDto);
+            }
+            
+            if(categoryDto.CategoryImage != null && categoryDto.CategoryImage.Length > 0 
+            && category.CategoryImage != categoryDto.CategoryImage.FileName
+            && categoryDto.CategoryImage.Length < 5 * 1024 * 1024){
+
+                // Delete the old image 
+                string oldFilePath = Path.Combine(WebHostEnvironment.WebRootPath + category.CategoryImage);
+                if(System.IO.File.Exists(oldFilePath)){
+                    System.IO.File.Delete(oldFilePath);
+                }
+
+                string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(categoryDto.CategoryImage!.FileName);
+                string filePath = Path.Combine(WebHostEnvironment.WebRootPath + "/uploads/" + fileName);
+                using(var stream = new FileStream(filePath, FileMode.Create)) {
+                            categoryDto.CategoryImage.CopyTo(stream);
+                        }
+
+                        category.CategoryImage = "/uploads/" + fileName; 
+                        Context.category.Update(category);
+                        Context.SaveChanges();
+                        
             }
 
 
@@ -148,6 +182,26 @@ namespace Inventory.Controllers
             Context.SaveChanges();
             return RedirectToAction("Index", "Category");
 
+        }
+
+
+
+
+
+
+        public IActionResult Delete(int id){
+            var category = Context.category.Find(id);
+
+            if(category == null){
+                return RedirectToAction("Index", "Category");
+            }   
+            string oldFilePath = Path.Combine(WebHostEnvironment.WebRootPath + category.CategoryImage);
+            if(System.IO.File.Exists(oldFilePath)){
+                System.IO.File.Delete(oldFilePath);
+            }
+            Context.category.Remove(category);
+            Context.SaveChanges();
+            return RedirectToAction("Index", "Category");
         }
 
 
