@@ -1,0 +1,50 @@
+@model Inventory.Models.CategoryDto
+@{
+    ViewData["Title"] = "Update Category";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mx-auto p-3 shadow my-3" style="width: 450px;">
+            <div class="card-body">
+                <form action="@Url.Action("Edit", "Category", new { id = ViewData["Id"] })" method="post" enctype="multipart/form-data" class="d-flex flex-column gap-4">
+                    <div class="form-group">
+                        <label for="Id">Category Id: @ViewData["Id"]</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="CategoryName">Category Name</label>
+                        <input value="@Model.CategoryName" type="text" name="CategoryName" id="CategoryName" class="form-control" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="CategoryDesc">Description</label>
+                        <input value="@Model.CategoryDesc" type="text" name="CategoryDesc" id="CategoryDesc" class="form-control" />
+                        <span asp-validation-for="CategoryDesc" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="CategoryImage">Image</label>
+                        <input value="@ViewData["CategoryImage"]" type="file" name="CategoryImage" id="CategoryImage" class="form-control" onchange="previewImage(event)" accept="image/*" /> 
+                        <img id="imagePreview" src="@ViewData["CategoryImage"]" alt="Image Preview" class="img-fluid mt-3" width="80"/>
+                        <span asp-validation-for="CategoryImage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>CreatedAt: @ViewData["CreatedAt"]</label>
+                    </div>
+                    <div class="form-group">
+                        <label>UpdatedAt: @ViewData["UpdatedAt"]</label>
+                    </div>
+                    <div class="form-group d-flex flex-row justify-content-end gap-3">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary" asp-controller="Category"
+                            asp-action="Index">Cancel</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

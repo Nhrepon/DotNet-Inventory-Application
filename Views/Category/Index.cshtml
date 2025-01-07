@@ -1,0 +1,53 @@
+
+@model List<Category>
+@{
+    ViewData["Title"] = "Category list";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-12">
+        <a class="btn btn-success" asp-controller="Category" asp-action="Create">Add category</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Created date</th>
+                    <th>Updated date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var category in Model){
+                    <tr>
+                        <td>@category.Id</td>
+                        <td>@category.CategoryName</td>
+                        <td>@category.CategoryDesc</td>
+                        <td><img src="@category.CategoryImage" alt="@category.CategoryName" width="80"/></td>
+                        <td>@category.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td>@category.UpdatedAt.ToString("dd/MM/yyyy")</td>
+                        <td >
+                            <div class="d-flex flex-row gap-1">
+                                <a class="nav-link" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id">
+                                <i class="bi bi-pencil fs-5"></i>
+                            </a>
+                            <a class="text-danger nav-link" asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id">
+                                <i class="bi bi-trash fs-5"></i>
+                            </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
