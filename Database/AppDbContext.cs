@@ -9,10 +9,11 @@ namespace Inventory.Database
 {
     public class AppDbContext : DbContext
     {
+        public readonly DbContextOptions Options;
         public AppDbContext(DbContextOptions options): base(options)
         {
-            
+            Options = options;
         }
-        public DbSet<Category> category{set; get;}
+        public DbSet<Category> categories{set; get;}
     }
 }

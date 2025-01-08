@@ -56,7 +56,7 @@ namespace Inventory.Migrations
                     b.HasIndex("CategoryName")
                         .IsUnique();
 
-                    b.ToTable("category");
+                    b.ToTable("categories");
                 });
 #pragma warning restore 612, 618
         }

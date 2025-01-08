@@ -2,16 +2,18 @@
 {
     public class Product
     {
-        public int id{ get; set; }
-        public string? title { get; set; }
-        public string? description { get; set; }
-        public string? image { get; set; }
-        public string? color { get; set; }
-        public string? quatity { get; set; }
-        public string? sku { get; set; }
-        public string? category { get; set; }
-        public string? brand { get; set; }
-        public string? user { get; set; }
+        public int Id{ get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public string? Image { get; set; }
+        public string? Color { get; set; }
+        public string? Quantity { get; set; }
+        public string? Sku { get; set; }
+        public int CategoryId { get; set; }
+        public int BrandId { get; set; }
+        public int UserId { get; set; }
+        
+        public required Category category {get; set;}
 
     }
 }

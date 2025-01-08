@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventory.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241231132420_categories")]
+    [Migration("20250107170006_categories")]
     partial class categories
     {
         /// <inheritdoc />
@@ -59,7 +59,7 @@ namespace Inventory.Migrations
                     b.HasIndex("CategoryName")
                         .IsUnique();
 
-                    b.ToTable("category");
+                    b.ToTable("categories");
                 });
 #pragma warning restore 612, 618
         }

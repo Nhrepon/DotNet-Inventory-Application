@@ -12,7 +12,7 @@ namespace Inventory.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "category",
+                name: "categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -25,12 +25,12 @@ namespace Inventory.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_category", x => x.Id);
+                    table.PrimaryKey("PK_categories", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_category_CategoryName",
-                table: "category",
+                name: "IX_categories_CategoryName",
+                table: "categories",
                 column: "CategoryName",
                 unique: true);
         }
@@ -39,7 +39,7 @@ namespace Inventory.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "category");
+                name: "categories");
         }
     }
 }

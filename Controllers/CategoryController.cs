@@ -21,7 +21,7 @@ namespace Inventory.Controllers
 
         public IActionResult Index()
         {
-            var categories = Context.category.OrderByDescending(c => c.Id).ToList();
+            var categories = Context.categories.OrderByDescending(c => c.Id).ToList();
             return View(categories);
         }
 
@@ -44,7 +44,7 @@ namespace Inventory.Controllers
     // }
 
             // Check for duplicate category name 
-            bool isDuplicate = Context.category.Any(c => c.CategoryName == categoryDto.CategoryName); 
+            bool isDuplicate = Context.categories.Any(c => c.CategoryName == categoryDto.CategoryName); 
             if (isDuplicate) { ModelState.AddModelError("CategoryName", "Category Name already exists");}
 
 
@@ -66,7 +66,7 @@ namespace Inventory.Controllers
 
                 using(var transaction = await Context.Database.BeginTransactionAsync()){
                     try{
-                        Context.category.Add(cat);
+                        Context.categories.Add(cat);
                         await Context.SaveChangesAsync();
 
                         string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(categoryDto.CategoryImage!.FileName);
@@ -79,7 +79,7 @@ namespace Inventory.Controllers
 
                         // Update the category with the correct image path 
                         cat.CategoryImage = "/uploads/" + fileName; 
-                        Context.category.Update(cat); 
+                        Context.categories.Update(cat); 
                         await Context.SaveChangesAsync(); 
                         // Commit the transaction 
                         await transaction.CommitAsync();
@@ -104,7 +104,7 @@ namespace Inventory.Controllers
 
 
         public IActionResult Edit(int id){
-            var category = Context.category.Find(id);
+            var category = Context.categories.Find(id);
 
             if(category == null){
                 return RedirectToAction("Index", "Category");
@@ -127,13 +127,13 @@ namespace Inventory.Controllers
 
         [HttpPost]
         public IActionResult Edit (int id, CategoryDto categoryDto){
-            var category = Context.category.Find(id);
+            var category = Context.categories.Find(id);
 
             if(category == null){
                 return RedirectToAction("Index", "Category");
             }
 
-            if (Context.category.Any(c => c.CategoryName == categoryDto.CategoryName && c.Id != id))
+            if (Context.categories.Any(c => c.CategoryName == categoryDto.CategoryName && c.Id != id))
                 {
                     ModelState.AddModelError("CategoryName", "Category Name already exists");
                     ViewData["Id"] = category.Id;
@@ -169,7 +169,7 @@ namespace Inventory.Controllers
                         }
 
                         category.CategoryImage = "/uploads/" + fileName; 
-                        Context.category.Update(category);
+                        Context.categories.Update(category);
                         Context.SaveChanges();
                         
             }
@@ -178,7 +178,7 @@ namespace Inventory.Controllers
             category.CategoryName = categoryDto.CategoryName;
             category.CategoryDesc = categoryDto.CategoryDesc;
             category.UpdatedAt = DateTime.Now;
-            Context.category.Update(category);
+            Context.categories.Update(category);
             Context.SaveChanges();
             return RedirectToAction("Index", "Category");
 
@@ -190,7 +190,7 @@ namespace Inventory.Controllers
 
 
         public IActionResult Delete(int id){
-            var category = Context.category.Find(id);
+            var category = Context.categories.Find(id);
 
             if(category == null){
                 return RedirectToAction("Index", "Category");
@@ -199,7 +199,7 @@ namespace Inventory.Controllers
             if(System.IO.File.Exists(oldFilePath)){
                 System.IO.File.Delete(oldFilePath);
             }
-            Context.category.Remove(category);
+            Context.categories.Remove(category);
             Context.SaveChanges();
             return RedirectToAction("Index", "Category");
         }
