@@ -1,0 +1,171 @@
+<div class="container-fluid">
+        <div class="row">
+          <div class="d-flex justify-content-around align-items-center ">
+            <a href="/" class="nav-link text-light ">
+              <i class="fs-4 bi bi-house-fill"></i>
+            </a>
+            <a href="/dashboard" class="nav-link text-light">
+              <i class="bi bi-speedometer2 fs-4"></i>
+              <span class="fs-3 d-none d-md-inline ms-md-1">Dashboard</span>
+            </a>
+          </div>
+          <hr/>
+
+          <div class="menu">
+          <ul class="nav" id="menu">
+            <li class="nav-item">
+              <a href="/inbox" class="nav-link link-dark">
+                <i class="fs-4 bi-mailbox-flag"></i>
+                <span class="d-none d-md-inline">Inbox</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#post" data-bs-toggle="collapse" class="nav-link link-dark position-relative">
+                <i class="fs-4 bi bi-card-text"></i>
+                <span class="d-none d-md-inline">Post</span>
+                <i class="fs-4 bi bi-chevron-down position-absolute end-0 d-none d-md-inline"></i>
+              </a>
+
+            </li>
+            <ul class="collapse nav ms-3" id="post" data-bs-parent="#menu">
+              <li class="nav-item">
+                <a href="/new-post" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">New post</span>
+                  <span class="d-md-none d-inline-block">New</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/all-post" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">All post</span>
+                  <span class="d-md-none d-inline-block">All</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/category" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">Category</span>
+                  <span class="d-md-none d-inline-block">Cat</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/tags" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">Tags</span>
+                  <span class="d-md-none d-inline-block">Tags</span>
+                </a>
+              </li>
+            </ul>
+
+
+            <li class="nav-item">
+              <a href="/media" class="nav-link link-dark">
+                <i class="fs-4 bi bi-card-image "></i>
+                <span class="d-none d-md-inline">Media</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#Portfolio" data-bs-toggle="collapse" class="nav-link link-dark position-relative">
+                <i class="fs-4 bi bi-briefcase"></i>
+                <span class="d-none d-md-inline">Portfolio</span>
+                <i class="fs-4 bi bi-chevron-down position-absolute end-0 d-none d-md-inline"></i>
+              </a>
+            </li>
+            <ul class="collapse nav ms-3" id="Portfolio" data-bs-parent="#menu">
+              <li class="nav-item">
+                <a href="/mern" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">MERN</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/mern" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">React</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/mern" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">Product</span>
+                </a>
+              </li>
+            </ul>
+            <li class="nav-item">
+              <a href="#Products" data-bs-toggle="collapse" class="nav-link link-dark position-relative">
+                <i class="fs-4 bi-cart4"></i>
+                <span class=" d-none d-md-inline">Products</span>
+                <i class="fs-4 bi bi-chevron-down position-absolute end-0 d-none d-md-inline"></i>
+              </a>
+            </li>
+            <ul class="collapse nav ms-3" id="Products" data-bs-parent="#menu">
+              <li class="nav-item">
+                <a asp-controller="Brand" asp-action="Index" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">Brand</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a asp-controller="Category" asp-action="Index" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">Category</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/mern" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">Product</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/mern" class="nav-link link-dark">
+                  <span class="d-none d-md-inline">Product</span>
+                </a>
+              </li>
+            </ul>
+
+            <li class="nav-item">
+              <a href="/mern" class="nav-link link-dark">
+                <i class="fs-4 bi-people"></i>
+                <span class="d-none d-md-inline">Customers</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/users" class="nav-link link-dark">
+                <i class="fs-4 bi bi-person-circle"></i>
+                <span class="d-none d-md-inline">Users</span>
+              </a>
+            </li>
+          </ul>
+          </div>
+
+          <div class="text-center">
+            <hr/>
+            
+          <div class="dropdown p-3 bg-light rounded">
+
+            <a asp-action="#" class="d-flex align-items-center link-dark nav-link dropdown-toggle"
+                  id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="/nhrepon.jpg" alt="home" width="32" class="rounded-circle me-2"/>
+              <strong class="d-none d-sm-inline">Name</strong>
+            </a>
+            <ul class="dropdown-menu shadow-lg ">
+              <li>
+                <a href="/profile" class="dropdown-item">
+                  New project...
+                </a>
+              </li>
+              <li>
+                <a href="/setting" class="dropdown-item">
+                  Settings
+                </a>
+              </li>
+              <li>
+                <a href="/profile" class="dropdown-item">
+                  Profile
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider"/>
+              </li>
+              <li>
+                <a href="/logout" class="dropdown-item">
+                  Sign out
+                </a>
+              </li>
+            </ul>
+          </div>
+          </div>
+        </div>
+      </div>

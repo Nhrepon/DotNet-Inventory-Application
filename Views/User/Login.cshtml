@@ -41,7 +41,7 @@
 
             if (response.data['status'] == 'success') {
                 successToast("Login success!");
-                //window.location.href = '@Url.Action("Dashboard","User")';
+                window.location.href = '@Url.Action("Index","Dashboard")';
             } else {
                 errorToast("Login failed");
             }
