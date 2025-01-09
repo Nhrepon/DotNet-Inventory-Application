@@ -14,6 +14,7 @@ namespace Inventory.Database
         {
             Options = options;
         }
-        public DbSet<Category> categories{set; get;}
+        public required DbSet<Category> categories{set; get;}
+        public required DbSet<User> users{set; get;}
     }
 }

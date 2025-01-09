@@ -1,23 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+
+using Inventory.Database;
 using Inventory.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Inventory.Controllers
 {
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private readonly IConfiguration _configuration;
-        public UserController(IConfiguration configuration)
+        public readonly AppDbContext AppDbContext;
+
+        public UserController(AppDbContext appDbContext)
         {
-            _configuration = configuration;
+            AppDbContext = appDbContext;
         }
+
+
+
+
+        // private readonly IConfiguration _configuration;
+        // public UserController(IConfiguration configuration)
+        // {
+        //     _configuration = configuration;
+        // }
 
 
         [HttpGet]
@@ -26,9 +34,6 @@ namespace Inventory.Controllers
         {
             return View();
         }
-
-
-
 
         // [HttpPost]
         // [Route("login")]
@@ -89,61 +94,71 @@ namespace Inventory.Controllers
         //     }
         // }
 
-
-
-
         [HttpPost]
         [Route("userLogin")]
-        public async Task<IActionResult> Logins([FromBody] User user)
-        {
-            if (user == null)
-            {
-                return BadRequest(new { status = "error", message = "Invalid user data." });
+        public async Task<IActionResult> UserLogin([FromBody] User user){
+            var data = await AppDbContext.users.FirstOrDefaultAsync(u => u.UserEmail == user.UserEmail && u.PasswordHash == user.PasswordHash);
+            if (data != null && data.UserEmail == user.UserEmail) {
+                HttpContext.Session.SetString("UserName", data.UserName);
+                HttpContext.Session.SetString("UserEmail", data.UserEmail);
+                //HttpContext.Session.SetString("UserRole", data.UserRole.ToString());
+                
+                return Ok(new { status = "success", message = "Login successful" , data = data});
             }
+                return Ok(new { status = "error", message = "Invalid username or password" });
 
-            try
-            {
-                string connectionString = _configuration.GetConnectionString("SqlConnection");
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    await connection.OpenAsync();
-
-                    string query = @"SELECT * FROM Users WHERE UserEmail = @UserEmail AND Password = @Password";
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@UserEmail", user.UserEmail);
-                        command.Parameters.AddWithValue("@Password", user.Password);
-
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            if (await reader.ReadAsync())
-                            {
-                                var loggedInUser = new User
-                                {
-                                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                    UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                                    UserEmail = reader.GetString(reader.GetOrdinal("UserEmail")),
-                                    //Password = reader.GetString(reader.GetOrdinal("Password")),
-                                    CreatedAt = reader.GetDateTime(reader.GetOrdinal("createdAt")),
-                                    UpdatedAt = reader.GetDateTime(reader.GetOrdinal("updatedAt")),
-                                    // Include other user properties as needed
-                                };
-
-                                return Ok(new { status = "success", message = "Login successful", data = loggedInUser });
-                            }
-                            else
-                            {
-                                return Unauthorized(new { status = "error", message = "Invalid username or password" });
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return Ok(new { status = "error", message = ex.Message });
-            }
+            
         }
+        // public async Task<IActionResult> Logins([FromBody] User user)
+        // {
+        //     if (user == null)
+        //     {
+        //         return BadRequest(new { status = "error", message = "Invalid user data." });
+        //     }
+
+        //     try
+        //     {
+        //         string connectionString = _configuration.GetConnectionString("SqlConnection");
+        //         using (var connection = new SqlConnection(connectionString))
+        //         {
+        //             await connection.OpenAsync();
+
+        //             string query = @"SELECT * FROM Users WHERE UserEmail = @UserEmail AND Password = @Password";
+        //             using (var command = new SqlCommand(query, connection))
+        //             {
+        //                 command.Parameters.AddWithValue("@UserEmail", user.UserEmail);
+        //                 command.Parameters.AddWithValue("@Password", user.Password);
+
+        //                 using (var reader = await command.ExecuteReaderAsync())
+        //                 {
+        //                     if (await reader.ReadAsync())
+        //                     {
+        //                         var loggedInUser = new User
+        //                         {
+        //                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
+        //                             UserName = reader.GetString(reader.GetOrdinal("UserName")),
+        //                             UserEmail = reader.GetString(reader.GetOrdinal("UserEmail")),
+        //                             //Password = reader.GetString(reader.GetOrdinal("Password")),
+        //                             CreatedAt = reader.GetDateTime(reader.GetOrdinal("createdAt")),
+        //                             UpdatedAt = reader.GetDateTime(reader.GetOrdinal("updatedAt")),
+        //                             // Include other user properties as needed
+        //                         };
+
+        //                         return Ok(new { status = "success", message = "Login successful", data = loggedInUser });
+        //                     }
+        //                     else
+        //                     {
+        //                         return Unauthorized(new { status = "error", message = "Invalid username or password" });
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Ok(new { status = "error", message = ex.Message });
+        //     }
+        // }
 
 
 
@@ -158,55 +173,75 @@ namespace Inventory.Controllers
 
 
 
-
-
-
-
-
-
         [HttpPost]
-        public async Task<IActionResult> Registration([FromBody] User user)
-        {
-            if (user == null)
-            {
-                return BadRequest(new
-                {
-                    status = "error",
-                    message = "Invalid user data."
-                });
-            }
-            try
-            {
-                string connectionString = _configuration.GetConnectionString("SqlConnection");
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    DateTime dateTime = DateTime.Now;
-                    await connection.OpenAsync();
-                    string query = "INSERT INTO Users (UserName, UserEmail, Password, CreatedAt, UpdatedAt) VALUES (@UserName, @UserEmail, @Password, GETDATE(), GETDATE() ); SELECT SCOPE_IDENTITY();";
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@UserName", user.UserName);
-                        command.Parameters.AddWithValue("@UserEmail", user.UserEmail);
-                        command.Parameters.AddWithValue("@Password", user.Password);
-                        var userId = await command.ExecuteScalarAsync();
-                        if (userId != null)
-                        {
-                            user.Id = Convert.ToInt32(userId);
-                            return Ok(new { status = "success", message = "Brand created successfully.", data = user });
-                            //return View(user);
-                        }
-                        else
-                        {
-                            return Ok(new { status = "error", message = "Failed to create brand." });
-                        }
-                    }
+        public async Task<IActionResult> Registration([FromBody] User user){
+
+            bool isDuplicate = AppDbContext.users.Any(c => c.UserEmail == user.UserEmail); 
+            if(isDuplicate) {
+                    return Ok(new { status = "duplicate", message = "Email already exists. Please try to login" });
                 }
-            }
-            catch (Exception ex)
-            {
-                return Ok(new { status = "error", message = ex.Message});
-            }
+
+                if(user.UserEmail != null && user.PasswordHash != null){
+                    try{
+                    User newUser = new User{
+                        UserName = user.UserName,
+                        UserEmail = user.UserEmail,
+                        PasswordHash = user.PasswordHash
+                    };
+                    AppDbContext.users.Add(newUser);
+                    await AppDbContext.SaveChangesAsync();
+                    return Ok(new { status = "success", message = "Registration successful", data = newUser });
+                }catch(Exception ex){
+                    return Ok(new { status = "error", message = ex.Message });
+                }
+                }
+
+            return View(user);
+            
         }
+
+        // public async Task<IActionResult> Registration([FromBody] User user)
+        // {
+        //     if (user == null)
+        //     {
+        //         return BadRequest(new
+        //         {
+        //             status = "error",
+        //             message = "Invalid user data."
+        //         });
+        //     }
+        //     try
+        //     {
+        //         string connectionString = _configuration.GetConnectionString("SqlConnection");
+        //         using (var connection = new SqlConnection(connectionString))
+        //         {
+        //             DateTime dateTime = DateTime.Now;
+        //             await connection.OpenAsync();
+        //             string query = "INSERT INTO Users (UserName, UserEmail, Password, CreatedAt, UpdatedAt) VALUES (@UserName, @UserEmail, @Password, GETDATE(), GETDATE() ); SELECT SCOPE_IDENTITY();";
+        //             using (var command = new SqlCommand(query, connection))
+        //             {
+        //                 command.Parameters.AddWithValue("@UserName", user.UserName);
+        //                 command.Parameters.AddWithValue("@UserEmail", user.UserEmail);
+        //                 command.Parameters.AddWithValue("@Password", user.Password);
+        //                 var userId = await command.ExecuteScalarAsync();
+        //                 if (userId != null)
+        //                 {
+        //                     user.Id = Convert.ToInt32(userId);
+        //                     return Ok(new { status = "success", message = "Brand created successfully.", data = user });
+        //                     //return View(user);
+        //                 }
+        //                 else
+        //                 {
+        //                     return Ok(new { status = "error", message = "Failed to create brand." });
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Ok(new { status = "error", message = ex.Message});
+        //     }
+        // }
 
 
 

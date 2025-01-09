@@ -9,12 +9,10 @@ namespace Inventory.Controllers
     public class BrandController : Controller
     {
         private readonly IConfiguration _configuration;
-
         public BrandController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-
         [HttpGet]
         public async Task<IActionResult> BrandList()
         {
@@ -65,10 +63,6 @@ namespace Inventory.Controllers
         //    return View();
         // }
 
-
-
-
-
         [HttpPost]
         public async Task<IActionResult> CreateBrand([FromBody] Brand newBrand)
         {
@@ -116,5 +110,11 @@ namespace Inventory.Controllers
                 return Ok(new { status = "error", message = ex.Message });
             }
         }
+    
+    // end /////////////////////////////////////////////////////////////////
+    
+    
+    
+    
     }
 }

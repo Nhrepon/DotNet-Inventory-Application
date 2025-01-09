@@ -17,11 +17,7 @@
                         <button onclick="login()" class="btn btn-success mb-3">Login</button>
                         <br>
                         <div class="text-center">Don't have an account? <a class="text-success" href="@Url.Action("Registration","User")">Registration</a></div>
-                        <div>
-                            {
-                                
-                            }
-                        </div>
+                        
                     </div>
                 </div>
 
@@ -41,7 +37,7 @@
         } else if (password.length == 0) {
             errorToast('Please enter password');
         } else {
-            let response = await axios.post('@Url.Action("Login","User")', { email: email, password: password });
+            let response = await axios.post('@Url.Action("UserLogin","User")', { UserEmail: email, PasswordHash: password });
 
             if (response.data['status'] == 'success') {
                 successToast("Login success!");

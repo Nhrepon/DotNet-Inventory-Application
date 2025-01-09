@@ -1,19 +1,24 @@
-using System;
-using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Inventory.Models
 {
+    [Index(nameof(UserEmail), IsUnique = true)]
     public class User
     {
         public int Id{get; set;}
-        public string? UserName{get; set;}
+        [MaxLength(50)]
+        public string UserName{get; set;} = "";
         [Required]
+        [EmailAddress]
         public string? UserEmail{get; set;}
-        public string? Password{get; set;}
-        public string Role{get; set;} = "user";
+        [Required]
+        [MinLength(4)]
+        public string? PasswordHash{get; set;}
+        public string UserAddress{get; set;} = "";
+        public enum UserRole{Admin=1, User=0}
         public DateTime CreatedAt{get; set;} = DateTime.Now;
         public DateTime UpdatedAt{get; set;} = DateTime.Now;
     }

@@ -19,6 +19,11 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 
 
 
+// Session
+builder.Services.AddSession(options =>{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
 
 // // Configuration setup
 // var configuration = new ConfigurationBuilder()
@@ -46,7 +51,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
-
+app.UseSession();
 
 
 

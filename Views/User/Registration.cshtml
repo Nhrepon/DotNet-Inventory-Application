@@ -11,7 +11,7 @@
                                 <input id="password" name="password" class="form-control rounded" type="password" placeholder="Password" />
                                 <button onclick="registration()" class="btn btn-success text-center" type="submit">Create</button>
                                 <br>
-                                <div class="text-center">Already have an account? <a class="text-success" href="{{url('/user-login')}}">Login</a></div>
+                                <div class="text-center">Already have an account? <a class="text-success" href="@Url.Action("Login", "User")">Login</a></div>
 
                             </div>
                         </div>
@@ -40,11 +40,11 @@
                 let response = await axios.post('/user', {
                     UserName: name,
                     UserEmail: email,
-                    Password: password
+                    PasswordHash: password
                 });
 
                 if (response.data['status'] == 'success') {
-
+                    await successToast(response.data["message"]);
                     window.location.href = '/user/login';
                 } else if(response.data['status'] == 'duplicate'){
                     errorToast("Email already exists. Please try to login");
