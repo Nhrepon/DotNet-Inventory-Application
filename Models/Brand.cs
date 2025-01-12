@@ -1,16 +1,23 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+
 namespace Inventory.Models
 {
+    [Index(nameof(BrandName), IsUnique = true)]
     public class Brand
     {
 
         public int Id { get; set; }
-        public string? BrandName { get; set; }
-        public string? BrandImg { get; set; }
-        public string? BrandDesc { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        [Required, MaxLength(50), NotNull]
+        public required string BrandName { get; set; }
+        [MaxLength(255)]
+        public string BrandDesc { get; set; } = "";
+        public string BrandImg { get; set; } = "";
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
 
 

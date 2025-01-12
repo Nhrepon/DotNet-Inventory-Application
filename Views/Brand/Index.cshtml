@@ -1,7 +1,7 @@
-﻿@model Inventory.Models.ErrorViewModel
-
+﻿@model List<Brand>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Brand list";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
 
@@ -10,32 +10,95 @@
         <div class="col-12 text-center">
             <h3>All brands</h3>
         </div>
+        <div class="new">
+            <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  New
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new Brand</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="BrandName">Brand Name</label>
+            <input type="text" name="BrandName" id="BrandName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="BrandDesc">Brand Description</label>
+            <input type="text" name="BrandDesc" id="BrandDesc" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="BrandImg">Brand Image</label>
+            <input type="file" name="BrandImg" id="BrandImg" class="form-control" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+        </div>
     </div>
     <hr/>
     <div class="row">
-        @{
-            for (var i=0; i<10; i++)
-            {
-                <div class="col-sm-3">
-                    <div class="card shadow my-3">
-                        <img class="card-img" src="/images/image.jpg" />
-                        <div class="card-body">
-                            <a asp-action="Details" class="card-title text-black text-decoration-none"><h5 class="fs-6">Dell 15 Inch MacBook Air (2023) </h5></a>
-                            <div class="card-text">Price: <del class="text-danger">$70.00</del> $50.00</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-12">
+            @if(Model == null || !Model.Any()){
+                <h2 class="text-center">No Content found.</h2>
+            }else{ 
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>CreatedAt</th>
+                        <th>UpdatedAt</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var brand in Model){
+                    <tr>
+                        <td>@brand.Id</td>
+                        <td>@brand.BrandName</td>
+                        <td>@brand.BrandDesc</td>
+                        <td>@brand.BrandImg</td>
+                        <td>@brand.CreatedAt.ToString("dd/MMM/yy")</td>
+                        <td>@brand.UpdatedAt.ToString("dd-MMM-yy")</td>
+                        <td>
+                            <div class="d-flex flex-row gap-1">
+                                <a class="nav-link" asp-controller="Brand" asp-action="Edit" asp-route-id="@brand.Id">
+                                <i class="bi bi-pencil fs-5"></i>
+                            </a>
+                            <a class="text-danger nav-link" asp-controller="Brand" asp-action="Delete" asp-route-id="@brand.Id">
+                                <i class="bi bi-trash fs-5"></i>
+                            </a>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
             }
-        }
+        </div>
     </div>
 </div>
-<hr />
 
 
-<div>
+
+@* <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+} *@
