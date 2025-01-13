@@ -1,5 +1,6 @@
 ﻿using Inventory.Database;
 using Inventory.Models;
+using Inventory.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -111,13 +112,15 @@ namespace Inventory.Controllers
     // --------------------------------------------------------------------------------------
 
 
-
-    public BrandController(AppDbContext appDbContext)
+    public readonly AppDbContext AppDbContext;
+    public readonly IFileUploadServices fileUpload;
+    public BrandController(AppDbContext appDbContext, IFileUploadServices fileUploadServices)
     {
             AppDbContext = appDbContext;
+            fileUpload = fileUploadServices;
         }
 
-        public AppDbContext AppDbContext { get; }
+        
 
 
 
@@ -128,11 +131,52 @@ namespace Inventory.Controllers
             var brands = AppDbContext.brands.OrderByDescending(b => b.Id).ToList();
            return View(brands);
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
 
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBrand([FromBody] BrandDto brandDto){
+            bool isDuplicate = AppDbContext.brands.Any(b => b.BrandName == brandDto.BrandName);
+            if(isDuplicate){
+                return Ok(new { status = "duplicate", message = "Brand Name already exists. Please try with another" });
+            }
+
+            
+            using(var transaction = AppDbContext.Database.BeginTransaction()){
+                try{
+                    string filePath = await fileUpload.UploadFile(brandDto.File!);
+                    if(filePath == null){
+                        return Ok(new { status = "error", message = "File upload failed" });
+                    }
+                    
+                    Brand newBrand = new Brand(){
+                        BrandName = brandDto.BrandName,
+                        BrandImg = filePath,
+                        BrandDesc = brandDto.BrandDesc,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    };
+                    AppDbContext.brands.Add(newBrand);
+                    await AppDbContext.SaveChangesAsync();
+                    
+                    transaction.Commit();
+
+                }catch(Exception ex){
+                    await transaction.RollbackAsync();
+                    return Ok(new { status = "error", message = ex.Message });
+            }
+
+
+            return Ok(new { status = "success", message = "Brand created successfully." });
+        }
     
     
     
     
     
     }
+}
 }

@@ -5,10 +5,13 @@
     overflow: auto;
     z-index: 999;
     transition: all ease 0.5s;
+    overflow-x: hidden;
+    scrollbar-width: none;
 }
 .dashboard-sidebar::-webkit-scrollbar{
     display: none;
 }
+
 
 .dashboard-sidebar .menu > ul{
     display: flex;
@@ -35,6 +38,8 @@
     width: calc(100% - 250px) !important;
     margin-left: 250px;
     transition: all ease 0.5s;
+    overflow-x: hidden;
+scrollbar-width: none;
 }
 
 

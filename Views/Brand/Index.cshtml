@@ -35,12 +35,13 @@
         </div>
         <div class="form-group">
             <label for="BrandImg">Brand Image</label>
-            <input type="file" name="BrandImg" id="BrandImg" class="form-control" />
+            <input type="file" name="BrandImg" id="BrandImg" class="form-control" onchange="previewImage(event)" accept="image/*" />
+            <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid mt-3" style="display: none;" width="150"/>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button onclick="saveData()" type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
@@ -93,7 +94,32 @@
     </div>
 </div>
 
-
+<script>
+    async function saveData(){
+        const BrandName = document.getElementById("BrandName").value;
+        const BrandDesc = document.getElementById("BrandDesc").value;
+        const BrandImg = document.getElementById("BrandImg");
+        if(BrandName.length == 0){
+            errorToast("Please enter brand name");
+        }else if(BrandDesc.length == 0){
+            errorToast("Please enter brand description");
+        }else if(BrandImg.length == 0){
+            errorToast("Please enter brand image");
+        }else{
+            const formData = new FormData();
+            formData.append("BrandName",BrandName);
+            formData.append("BrandDesc",BrandDesc);
+            formData.append("File",BrandImg.files[0]);
+            const response = await axios.post("http://localhost:5258/brand",formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+            if(response.data['status'] == 'success'){
+                successToast("Brand added successfully");
+                //window.location.reload();
+            }else{
+                errorToast("Something went wrong");
+            }
+    }
+    }
+</script>
 
 @* <div>
     <a asp-action="Index">Back to List</a>

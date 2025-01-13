@@ -1,5 +1,6 @@
 using System.Configuration;
 using Inventory.Database;
+using Inventory.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,8 +33,11 @@ builder.Services.AddSession(options =>{
 //     .Build();
 // builder.Services.AddSingleton<IConfiguration>(configuration);
 
+builder.Services.AddScoped<IFileUploadServices, FileUploadServices>();
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

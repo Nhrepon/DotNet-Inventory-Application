@@ -42,3 +42,5 @@ function previewImage(event) {
         output.style.display = 'block'; } 
         reader.readAsDataURL(event.target.files[0]); 
         }
+
+        

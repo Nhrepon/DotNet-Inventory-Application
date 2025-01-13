@@ -1,0 +1,49 @@
+@model Inventory.Models.BrandDto
+
+@{
+    ViewData["Title"] = "Create Brand";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+<div class="container-fluid">
+    <div class="container">
+
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mx-auto shadow p-3 my-3" style="width: 450px;">
+            <div class="card-body">
+                <form action="@Url.Action("CreateBrand", "Brand")" method="post" enctype="multipart/form-data" class="d-flex flex-column gap-4">
+                    <div class="form-group">
+                        <label for="BrandName">Brand Name</label>
+                        <input type="text" name="BrandName" id="BrandName" class="form-control" />
+                        <span asp-validation-for="BrandName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="BrandDesc">Description</label>
+                        <input type="text" name="BrandDesc" id="BrandDesc" class="form-control" />
+                        <span asp-validation-for="BrandDesc" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="BrandImg">Image</label>
+                        <input type="file" name="BrandImg" id="BrandImg" class="form-control" onchange="previewImage(event)" accept="image/*" /> 
+                        <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid mt-3" style="display: none;" width="150"/>
+                        <span asp-validation-for="BrandImg" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-flex flex-row justify-content-end gap-3">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary" asp-controller="Category"
+                            asp-action="Index">Cancel</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+<script>
+    
+</script>
