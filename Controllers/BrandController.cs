@@ -115,7 +115,7 @@ namespace Inventory.Controllers
     public readonly AppDbContext AppDbContext;
     public readonly IFileUploadServices fileUpload;
     public BrandController(AppDbContext appDbContext, IFileUploadServices fileUploadServices)
-    {
+        {
             AppDbContext = appDbContext;
             fileUpload = fileUploadServices;
         }
@@ -125,16 +125,19 @@ namespace Inventory.Controllers
 
 
 
-
+        [HttpGet]
         public IActionResult Index()
         {
             var brands = AppDbContext.brands.OrderByDescending(b => b.Id).ToList();
            return View(brands);
         }
-        public IActionResult Create()
-        {
-            return View();
-        }
+        
+        
+        // [HttpGet]
+        // public IActionResult Create()
+        // {
+        //     return View();
+        // }
 
 
         [HttpPost]
@@ -170,13 +173,17 @@ namespace Inventory.Controllers
             }
 
 
-            return Ok(new { status = "success", message = "Brand created successfully." });
+            return Ok(new { status = "success", message = "Brand created successfully."  });
         }
     
-    
-    
-    
-    
     }
+
+
+
+
+
+
+
+    
 }
 }
