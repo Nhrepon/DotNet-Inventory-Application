@@ -1,0 +1,27 @@
+
+@{
+    ViewData["Title"] = "File Upload";
+}
+
+<h2 class="fs-4">@ViewData["Title"]</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg p-5 gap-4">
+
+                <input class="form-control" type="file" multiple accept="image/*" onChange="handleFileChange(event)"
+                    name="file" />
+                <button onClick="uploadFile()" class="btn btn-success" type="submit">Upload Media</button>
+            </div>
+            <div  id="imagePreviewBox" class="my-4 position-relative d-none" style="columns:2, columnGap:15px">
+                <div class="card rounded shadow mb-3">
+                    <span class="position-absolute bg-light px-1 rounded end-0 me-1 mt-1">
+                        <i class="bi bi-x-square-fill"></i>
+                    </span>
+                    <img id="imagePreview" src="#" alt="Image Preview" class="card-img img-fluid" style="display: none;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

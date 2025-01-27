@@ -11,22 +11,13 @@ namespace Inventory.Controllers
     //[Route("[controller]")]
     public class MediaController : Controller
     {
-        private readonly ILogger<MediaController> _logger;
-
-        public MediaController(ILogger<MediaController> logger)
-        {
-            _logger = logger;
-        }
+    
 
         public IActionResult Index()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View("Error!");
-        }
+    
     }
 }

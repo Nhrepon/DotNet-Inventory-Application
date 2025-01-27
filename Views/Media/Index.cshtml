@@ -5,134 +5,41 @@
 }
 
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-12 text-center">
-            <h3>All brands</h3>
-        </div>
-        <div class="new">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                New
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add new Brand</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="BrandName">Brand Name</label>
-                                <input type="text" name="BrandName" id="BrandName" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="BrandDesc">Brand Description</label>
-                                <input type="text" name="BrandDesc" id="BrandDesc" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="BrandImg">Brand Image</label>
-                                <input type="file" name="BrandImg" id="BrandImg" class="form-control"
-                                    onchange="previewImage(event)" accept="image/*" />
-                                <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid mt-3"
-                                    style="display: none;" width="150" />
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button onclick="saveData()" type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-12 mt-3">
+            <h2>Upload Media</h2>
         </div>
     </div>
     <hr />
     <div class="row">
-        <div class="col-12">
-            @if (Model == null || !Model.Any())
-            {
-                <h2 class="text-center">No Content found.</h2>
-            }
-            else
-            {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Image</th>
-                            <th>CreatedAt</th>
-                            <th>UpdatedAt</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var brand in Model)
-                        {
-                            <tr>
-                                <td>@brand.Id</td>
-                                <td>@brand.BrandName</td>
-                                <td>@brand.BrandDesc</td>
-                                <td>@brand.BrandImg</td>
-                                <td>@brand.CreatedAt.ToString("dd/MMM/yy")</td>
-                                <td>@brand.UpdatedAt.ToString("dd-MMM-yy")</td>
-                                <td>
-                                    <div class="d-flex flex-row gap-1">
-                                        <a class="nav-link" asp-controller="Brand" asp-action="Edit" asp-route-id="@brand.Id">
-                                            <i class="bi bi-pencil fs-5"></i>
-                                        </a>
-                                        <a class="text-danger nav-link" asp-controller="Brand" asp-action="Delete"
-                                            asp-route-id="@brand.Id">
-                                            <i class="bi bi-trash fs-5"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
+        <div class="col-4 border-end vh-100">
+            @Html.Partial("_UploadPartial")
+        </div>
+        <div class="col-8">
+            <div class="grid-container my-2">
+                {
+                fileList?.map((item, i) => {
+                return (
+                <div key={i} class="cards card rounded shadow-sm">
+                    {/*<img class="w-100 rounded-top-2" src={URL.createObjectURL(item)} alt="img" />*/}
+                    <span class="position-absolute rounded" style={{right: 5, top: 5}} onClick={()=>
+                        deleteFile(item._id)}>
+                        <i class="bi bi-x-circle bg-light px-1 rounded"></i>
+                    </span>
+                    <img class="w-100 rounded-top-2" title={item.name} src={`${backendUrl + item.filePath}`}
+                        alt={item.name} crossOrigin="anonymous" onError={(e)=> e.target.style.display = 'none'}/>
+                    <div class="d-flex justify-content-between px-2 mt-2">
+                        <p>title</p>
+                        <p><i class="bi bi-suit-heart"></i> 5</p>
+                    </div>
+                </div>
+                );
+                })
+                }
+            </div>
+            
         </div>
     </div>
 </div>
 
-<script>
-    async function saveData() {
-        const BrandName = document.getElementById("BrandName").value;
-        const BrandDesc = document.getElementById("BrandDesc").value;
-        const BrandImg = document.getElementById("BrandImg");
-        if (BrandName.length == 0) {
-            errorToast("Please enter brand name");
-        } else if (BrandDesc.length == 0) {
-            errorToast("Please enter brand description");
-        } else if (BrandImg.length == 0) {
-            errorToast("Please enter brand image");
-        } else {
-            const formData = new FormData();
-            formData.append("BrandName", BrandName);
-            formData.append("BrandDesc", BrandDesc);
-            formData.append("File", BrandImg.files[0]);
-            const response = await axios.post("http://localhost:5258/Brand", formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-            if (response.data['status'] === 'success') {
-                successToast("Brand added successfully");
-                //window.location.reload();
-            } else {
-                errorToast("Something went wrong");
-            }
-        }
-    }
-</script>
-
-@* <div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} *@
