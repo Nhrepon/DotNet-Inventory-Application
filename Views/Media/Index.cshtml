@@ -1,4 +1,4 @@
-﻿@model List<Brand>
+﻿@model List<Media>
 @{
     ViewData["Title"] = "Brand list";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
@@ -17,27 +17,21 @@
             @Html.Partial("_UploadPartial")
         </div>
         <div class="col-8">
-            <div class="grid-container my-2">
-                {
-                fileList?.map((item, i) => {
-                return (
-                <div key={i} class="cards card rounded shadow-sm">
-                    {/*<img class="w-100 rounded-top-2" src={URL.createObjectURL(item)} alt="img" />*/}
-                    <span class="position-absolute rounded" style={{right: 5, top: 5}} onClick={()=>
-                        deleteFile(item._id)}>
+            @if(Model == null || !Model.Any()){
+                <h2 class="text-center">No Content found.</h2>
+            }else{
+                <div class="grid-container my-2">
+                @foreach(var file in Model){
+                <div class="cards card rounded shadow-sm">
+                    @* <img class="w-100 rounded-top-2" src={URL.createObjectURL(item)} alt="img" /> *@
+                    <span onclick="deleteFile(@file.Id)" class="position-absolute rounded end-0 top-0 me-1 mt-1">
                         <i class="bi bi-x-circle bg-light px-1 rounded"></i>
                     </span>
-                    <img class="w-100 rounded-top-2" title={item.name} src={`${backendUrl + item.filePath}`}
-                        alt={item.name} crossOrigin="anonymous" onError={(e)=> e.target.style.display = 'none'}/>
-                    <div class="d-flex justify-content-between px-2 mt-2">
-                        <p>title</p>
-                        <p><i class="bi bi-suit-heart"></i> 5</p>
-                    </div>
+                    <img class=" rounded" title="" src="@file.filePath" onError="(e)=> e.target.style.display = 'none'"/>
                 </div>
-                );
-                })
                 }
             </div>
+            }
             
         </div>
     </div>
