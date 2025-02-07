@@ -95,7 +95,7 @@ namespace Inventory.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("Inventory.Models.Media", b =>
+            modelBuilder.Entity("Inventory.Models.MediaFile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace Inventory.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("mediaFiles");
+                    b.ToTable("files");
                 });
 
             modelBuilder.Entity("Inventory.Models.User", b =>

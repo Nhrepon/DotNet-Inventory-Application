@@ -17,6 +17,6 @@ namespace Inventory.Database
         public required DbSet<Category> categories{set; get;}
         public required DbSet<User> users{set; get;}
         public DbSet<Brand> brands{set; get;}
-        public DbSet<Media> mediaFiles{set; get;}
+        public DbSet<MediaFile> files{set; get;}
     }
 }

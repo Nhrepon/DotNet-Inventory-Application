@@ -10,21 +10,15 @@
     <div class="row">
         <div class="col-12">
             <div class="card shadow-lg p-5 gap-4">
-<<<<<<< HEAD
 
-                <input class="form-control" type="file" accept="image/*" onChange="handleFileChange(event)"
+                <input id="file" class="form-control" type="file" accept="image/*" onChange="previewImage(event)"
                     name="file" />
-                <button onClick="uploadFile()" class="btn btn-success" type="submit">Upload Media</button>
-=======
-                <input id="file" class="form-control" type="file" multiple accept="image/*"
-                    name="file" onchange="previewImage(event)"/>
-                <div onClick="uploadFile()" class="btn btn-success">Upload Media</div>
->>>>>>> f9022319fb49a6ab75c71246e36654c699cd240a
+                <button onClick="uploadFile()" class="btn btn-success">Upload Media</button>
             </div>
             <div id="imagePreviewBox" class="my-4 position-relative d-none" style="columns:2, columnGap:15px">
                 
                     <div class="card rounded shadow mb-3">
-                        <span onclick="removeItem()" class="position-absolute bg-light px-1 rounded end-0 me-1 mt-1">
+                        <span onClick="removeItem()" class="position-absolute bg-light px-1 rounded end-0 me-1 mt-1">
                             <i class="bi bi-x-square-fill"></i>
                         </span>
                         <img id="imagePreview" src="" alt="Image Preview" class="card-img img-fluid" />

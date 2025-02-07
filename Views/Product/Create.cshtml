@@ -1,10 +1,5 @@
-﻿@model Inventory.Models.ErrorViewModel
-
-@{
-    Layout = "~/Views/Shared/_layout.cshtml";
-}
-
-@{
+﻿@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
     ViewData["Title"] = "Index";
 }
 
@@ -12,53 +7,90 @@
 <div class="container">
     <div class="row">
         <div class="col-12 text-center">
-            <h3>All products</h3>
+            <h3>Create New Products</h3>
         </div>
     </div>
-    <hr/>
-    <div class="row product">
-        @{
-            for (var i=0; i<10; i++)
-            {
-                <div class="col-sm-3">
-                    <div class="card shadow my-3">
-                        <img class="card-img" src="/images/image.jpg" />
-                        <div class="card-body">
-                            <a asp-action="Details" class="card-title text-black text-decoration-none"><h5 class="fs-6">Dell 15 Inch MacBook Air (2023) </h5></a>
-                            <div class="card-text">Price: <del class="text-danger">$70.00</del> $50.00</div>
-                        </div>
-                    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-8 d-flex flex-column gap-3">
+            <div class="form-group">
+                <label>Product Title:</label>
+                <input id="title" name="title" class="form-control" type="text" placeholder="Product Name" />
+            </div>
+            <div class="form-group">
+                <label>Product Description:</label>
+                <textarea id="description" name="description" rows="5" class="form-control" type="text"
+                    placeholder="Product Description" name="" id=""></textarea>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 d-flex align-items-center gap-3">
+                    <label>Price: </label>
+                    <input id="price" name="price" class="form-control" type="number" placeholder="Product Price" />
                 </div>
-            }
+                <div class="col-sm-6 d-flex align-items-center gap-3">
+                    <label>Quantity: </label>
+                    <input id="quantity" name="quantity" class="form-control" type="number" placeholder="Product Quantity" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 d-flex align-items-center gap-3">
+                    <label>Color: </label>
+                <input class="form-control" type="text" placeholder="Product Color" />
+                </div>
+                <div class="col-sm-6 d-flex align-items-center gap-3">
+                    <label>Size: </label>
+                <input class="form-control" type="text" placeholder="Product Size" />
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-sm-4 d-flex flex-column gap-3">
+            <div class="form-group">
+                <label class="">Select Brands</label>
+                <select name="brand" id="brand" class="form-control">
+                    <option value="">Select Brands</option>
+                    <option value="1">Apple</option>
+                    <option value="2">Samsung</option>
+                    <option value="3">Dell</option>
+                    <option value="4">Asus</option>
+                    <option value="5">Lenovo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="">Select Category</label>
+                <select name="category" id="category" class="form-control">
+                    <option value="">Select Category</option>
+                    <option value="1">Apple</option>
+                    <option value="2">Samsung</option>
+                    <option value="3">Dell</option>
+                    <option value="4">Asus</option>
+                    <option value="5">Lenovo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="">Select Product Image</label>
+                @* @await Html.PartialAsync("../Media/_FilePicker.cshtml") *@
+                <partial name="../Media/_FilePicker.cshtml" />
+                <img id="productImage" src="" alt="Product Image" style="max-width: 200px;"  onError="(e)=> e.target.style.display = 'none'"/>
+            </div>
+        </div>
+        <div class="col-12">
+            <button onclick="productSubmit()" class="btn btn-primary my-4">Create</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function productSubmit() {
+        var title = document.getElementById("title").value;
+        var brand = document.getElementById("brand").value;
+        var category = document.getElementById("category").value;
+        if (title == "") {
+            errorToast("Product title required!");
+        } else if (brand == "") {
+            errorToast("Please, Select a brand name!");
+        } else if (category == "") {
+            errorToast("Please, Select a category name!");
         }
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RequestId" class="control-label"></label>
-                <input asp-for="RequestId" class="form-control" />
-                <span asp-validation-for="RequestId" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ShowRequestId" /> @Html.DisplayNameFor(model => model.ShowRequestId)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    }
+</script>

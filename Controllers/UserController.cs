@@ -27,6 +27,10 @@ namespace Inventory.Controllers
         //     _configuration = configuration;
         // }
 
+        public IActionResult Index(){
+            var user = AppDbContext.users.OrderByDescending(u => u.Id).ToList();
+            return View(user);
+        }
 
         [HttpGet]
         [Route("login")]

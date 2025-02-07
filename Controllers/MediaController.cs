@@ -7,6 +7,7 @@ using Inventory.Database;
 using Inventory.Models;
 using Inventory.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Inventory.Controllers
@@ -27,9 +28,9 @@ namespace Inventory.Controllers
     }
     
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var files = AppDbContext.mediaFiles.OrderByDescending(m => m.Id).ToList();
+            var files = await AppDbContext.files.OrderByDescending(m => m.Id).ToListAsync();
             return View(files);
         }
 
@@ -42,12 +43,12 @@ namespace Inventory.Controllers
                     try{
                         string filePath = await FileUploadServices.UploadFile(file);
                         if(filePath != null){
-                            Media media = new Media(){
+                            MediaFile media = new MediaFile(){
                                 filePath=filePath,
                                 CreatedAt=DateTime.Now,
                                 UpdatedAt=DateTime.Now
                             };
-                            AppDbContext.mediaFiles.Add(media);
+                            AppDbContext.files.Add(media);
                             await AppDbContext.SaveChangesAsync();
                             transaction.Commit();
                         }
@@ -69,7 +70,7 @@ namespace Inventory.Controllers
 
 
         public IActionResult Delete(int id){
-            var file = AppDbContext.mediaFiles.Find(id);
+            var file = AppDbContext.files.Find(id);
             if(file == null){
                 return RedirectToAction("Index", "Media");
             }
@@ -77,7 +78,7 @@ namespace Inventory.Controllers
             if(System.IO.File.Exists(oldFilePath)){
                 System.IO.File.Delete(oldFilePath);
             }
-            AppDbContext.mediaFiles.Remove(file);
+            AppDbContext.files.Remove(file);
             AppDbContext.SaveChanges();
             //return RedirectToAction("Index", "Media");
             return Ok(new {status="success", message = "file deleted successfully!"});

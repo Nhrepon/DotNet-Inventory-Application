@@ -61,6 +61,43 @@ scrollbar-width: none;
 }
 
 
+
+
+
+.custom-modal{
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-content{
+    position: relative;
+    padding: 10px;
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    margin: 5% auto;
+}
+
+.custom-modal-body{
+    height: 400px;
+    overflow: auto;
+}
+.custom-modal-body::-webkit-scrollbar{
+    display: none;
+    width: 0 !important;
+}
+
+
+
+
+
 @media (max-width: 960px) {
     .grid-container{
         columns:3;

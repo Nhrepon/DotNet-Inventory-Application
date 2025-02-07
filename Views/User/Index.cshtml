@@ -1,25 +1,49 @@
-
+@model List<User>
 @{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
     ViewBag.Title = "Login";
 }
 
 
 <div class="container">
-    <div class="row vh-100">
-        <div class="col-12 col-md-6 col-xl-4 mx-auto">
-            <div class="card d-flex align-items-center justify-content-center p-5 my-3 shadow-lg ">
-                <div class="d-flex justify-content-center align-content-center">
-                    <div class="p-10 d-flex flex-wrap align-items-center justify-content-center gap-3">
-                        <input name="email" id="email" class="form-control" type="email" placeholder="Email" />
-                        <input name="password" id="password" class="form-control rounded" type="password" placeholder="Password" />
+    <div class="row">
+        <div class="col-12">
+            <h2 class=" text-center">User list</h2>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-12">
+            @if(Model == null || !Model.Any()){
+                <h2 class="text-center">No User found.</h2>
+            }else{
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var user in Model){
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.UserName</td>
+                            <td>@user.UserEmail</td>
+                            <td>@user.UserAddress</td>
+                            <td>@user.CreatedAt</td>
+                            <td>@user.UpdatedAt</td>
 
-                        <button onclick="login()" class="btn btn-success mb-3">Login</button>
-                        <br>
-                        <div class="text-center">Don't have an account? <a class="text-success fw-bold" href="@Url.Action("Index","User")">Registration</a></div>
-                    </div>
-                </div>
-
-            </div>
+                            @* <img class=" rounded" title="" src="" onError="(e)=> e.target.style.display = 'none'"/> *@
+                        </tr>
+                        }
+                    </tbody>
+            </table>
+            }
         </div>
     </div>
 </div>

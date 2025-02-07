@@ -27,7 +27,7 @@ namespace Inventory.Services
             if(file.Length > 5*1024*1024){
                 throw new Exception("File is too large");
             }
-            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" +Random.Shared.Next(1000, 9999)+ "_" + Path.GetExtension(file.FileName);
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" +Random.Shared.Next(1000, 9999)+ "_" + "DotNet_Inventory"+"_" + Path.GetExtension(file.FileName);
             string filePath = Path.Combine(WebHostEnvironment.WebRootPath, "uploads/", fileName);
             using(var fileStream = new FileStream(filePath, FileMode.Create)){
                 await file.CopyToAsync(fileStream);

@@ -1,12 +1,12 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="d-flex justify-content-around align-items-center ">
+    <div class="d-flex justify-content-around align-items-center fs-4">
       <a href="/" class="nav-link text-light ">
-        <i class="fs-4 bi bi-house-fill"></i>
+        <i class="bi bi-house-fill"></i>
       </a>
       <a href="/dashboard" class="nav-link text-light">
-        <i class="bi bi-speedometer2 fs-4"></i>
-        <span class="fs-3 d-none d-md-inline ms-md-1">Dashboard</span>
+        <i class="bi bi-speedometer2"></i>
+        <span class="d-none d-md-inline ms-md-1">Dashboard</span>
       </a>
     </div>
     <hr />
@@ -14,7 +14,7 @@
     <div class="menu">
       <ul class="nav" id="menu">
         <li class="nav-item">
-          <a href="/inbox" class="nav-link link-dark">
+          <a href="#" class="nav-link link-dark">
             <i class="bi bi-mailbox"></i>
             <span class="d-none d-md-inline">Inbox</span>
           </a>
@@ -31,6 +31,41 @@
             <span class="d-none d-md-inline">Category</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a asp-area="" asp-controller="Media" asp-action="Index" class="nav-link link-dark">
+            <i class="bi bi-card-image "></i>
+            <span class="d-none d-md-inline">Media</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#Products" data-bs-toggle="collapse" class="nav-link link-dark position-relative">
+            <i class="bi bi-cart"></i>
+            <span class=" d-none d-md-inline">Products</span>
+            <i class="bi bi-chevron-down position-absolute end-0 d-none d-md-inline"></i>
+          </a>
+        </li>
+        <ul class="collapse nav ms-3" id="Products" data-bs-parent="#menu">
+          <li class="nav-item">
+            <a asp-controller="Product" asp-action="Index" class="nav-link link-dark">
+              <span class="d-none d-md-inline">All Products</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a asp-controller="Product" asp-action="Create" class="nav-link link-dark">
+              <span class="d-none d-md-inline">Add New Product</span>
+            </a>
+          </li>
+        </ul>
+
+        <li class="nav-item">
+          <a asp-controller="Customer" asp-action="Index" class="nav-link link-dark">
+            <i class="bi bi-people"></i>
+            <span class="d-none d-md-inline">Customers</span>
+          </a>
+        </li>
+
+
+
         <li class="nav-item">
           <a href="#post" data-bs-toggle="collapse" class="nav-link link-dark position-relative">
             <i class="bi bi-card-text"></i>
@@ -67,12 +102,7 @@
         </ul>
 
 
-        <li class="nav-item">
-          <a asp-area="" asp-controller="Media" asp-action="Index" class="nav-link link-dark">
-            <i class="bi bi-card-image "></i>
-            <span class="d-none d-md-inline">Media</span>
-          </a>
-        </li>
+        
         <li class="nav-item">
           <a href="#Portfolio" data-bs-toggle="collapse" class="nav-link link-dark position-relative">
             <i class="bi bi-briefcase"></i>
@@ -97,44 +127,9 @@
             </a>
           </li>
         </ul>
+        
         <li class="nav-item">
-          <a href="#Products" data-bs-toggle="collapse" class="nav-link link-dark position-relative">
-            <i class="bi bi-cart"></i>
-            <span class=" d-none d-md-inline">Products</span>
-            <i class="bi bi-chevron-down position-absolute end-0 d-none d-md-inline"></i>
-          </a>
-        </li>
-        <ul class="collapse nav ms-3" id="Products" data-bs-parent="#menu">
-          <li class="nav-item">
-            <a asp-controller="Brand" asp-action="Index" class="nav-link link-dark">
-              <span class="d-none d-md-inline">Brand</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a asp-controller="Category" asp-action="Index" class="nav-link link-dark">
-              <span class="d-none d-md-inline">Category</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/mern" class="nav-link link-dark">
-              <span class="d-none d-md-inline">Product</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/mern" class="nav-link link-dark">
-              <span class="d-none d-md-inline">Product</span>
-            </a>
-          </li>
-        </ul>
-
-        <li class="nav-item">
-          <a href="/mern" class="nav-link link-dark">
-            <i class="bi bi-people"></i>
-            <span class="d-none d-md-inline">Customers</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/users" class="nav-link link-dark">
+          <a asp-controller="User" asp-action="Index" class="nav-link link-dark">
             <i class="bi bi bi-person-circle"></i>
             <span class="d-none d-md-inline">Users</span>
           </a>

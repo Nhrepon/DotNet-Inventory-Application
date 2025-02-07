@@ -1,10 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Inventory.Database;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
 {
     public class ProductController : Controller
     {
+        public readonly AppDbContext AppDbContext;
+        public ProductController(AppDbContext appDbContext)
+        {
+            AppDbContext = appDbContext;
+            
+        }
         // GET: ProductController
         public ActionResult Index()
         {
@@ -20,7 +27,9 @@ namespace Inventory.Controllers
         // GET: ProductController/Create
         public ActionResult Create()
         {
-            return View();
+
+            var files = AppDbContext.files.OrderByDescending(m => m.Id).ToList();
+            return View(files);
         }
 
         // POST: ProductController/Create

@@ -1,0 +1,58 @@
+@model List<MediaFile>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+                <button class="btn btn-success my-2 " onClick="openModal()">Select image</button>
+                <input type="hidden" id="selectedFilePath" name="SelectedFilePath" value="" /> @* Hidden input to store the path *@
+
+
+                <div id="modal" class="custom-modal d-none">
+                    <div class="bg-light mx-auto custom-modal-content">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="modal-title">Select image</h5>
+                            <button type="button" class="btn-close"  onClick="closeModal()"></button>
+                        </div>
+                        <div class="custom-modal-body">
+                        @if (Model == null || !Model.Any())
+                        {
+                                <h2 class="text-center">No Content found.</h2>
+                        }
+                        else
+                        {
+                            <div class="grid-container my-2">
+                            @foreach (var file in Model)
+                            {
+                                <div class="cards card rounded shadow-sm" onClick="selectImage('@file.filePath')">
+                                    <img class="rounded" title="" src="@file.filePath" onError="(e)=> e.target.style.display = 'none'"/>
+                                </div>
+                            }
+                            </div>
+                        }
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function openModal(){
+        document.getElementById("modal").classList.toggle("d-none");
+    };
+    function closeModal(){
+        document.getElementById("modal").classList.add("d-none");
+    };
+
+    function selectImage(filePath) {
+        document.getElementById("selectedFilePath").value = filePath;
+        closeModal();
+        const productImage = document.getElementById('productImage'); 
+        if(productImage)
+        {
+           productImage.src = filePath;
+        }
+    }
+</script>

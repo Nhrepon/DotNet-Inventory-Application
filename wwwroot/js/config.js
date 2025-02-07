@@ -108,7 +108,7 @@ function removeItem(){
 async function uploadFile(){
     try{
         let files = document.getElementById("file").files;
-        if(files.length === 0){
+        if(files.length == 0){
             errorToast("Please, Select images");
         }else{
             let formData = new FormData();
