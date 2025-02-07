@@ -95,6 +95,29 @@ namespace Inventory.Migrations
                     b.ToTable("categories");
                 });
 
+            modelBuilder.Entity("Inventory.Models.Media", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("filePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("mediaFiles");
+                });
+
             modelBuilder.Entity("Inventory.Models.User", b =>
                 {
                     b.Property<int>("Id")

@@ -32,7 +32,7 @@ namespace Inventory.Services
             using(var fileStream = new FileStream(filePath, FileMode.Create)){
                 await file.CopyToAsync(fileStream);
             }
-            return filePath;
+            return "/uploads/"+fileName;
         }
 
     }
