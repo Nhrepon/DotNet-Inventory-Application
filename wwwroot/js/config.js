@@ -34,20 +34,7 @@ function errorToast(msg) {
 
 
 
-function previewImage(event) {
-    var reader = new FileReader(); 
-    reader.onload = function() { 
-        var output = document.getElementById('imagePreview'); 
-        output.src = reader.result;
-        document.getElementById("imagePreviewBox").classList.remove("d-none"); 
-         } 
-        reader.readAsDataURL(event.target.files[0]); 
-        }
 
-function removeItem(){
-    document.getElementById("file").value = "";
-    document.getElementById("imagePreviewBox").remove();
-}
 
 // function handleFileChange(e) {
 //     previewImage(e);
@@ -105,40 +92,11 @@ function removeItem(){
 
 
 
-async function uploadFile(){
-    try{
-        let files = document.getElementById("file").files;
-        if(files.length == 0){
-            errorToast("Please, Select images");
-        }else{
-            let formData = new FormData();
-            for(const file of files){
-                formData.append("file", file);
-            }
-            let response =await axios.post("/Media/upload", formData, );
-            if(response.data.status === "success"){
-                window.location.href = "/Media";
-                successToast(response.data["message"]);
-            }else{
-                errorToast(response.data["message"]);
-            }
-        }
-    }catch(e){
-        errorToast(e.message);
-    }
-}
 
 
 
 
 
 
-async function deleteFile(id) {
-        const res = await axios.delete(`Media/Delete/${id}`);
-        if (res.data.status === "success") {
-            successToast(`${id} deleted successfully!`);
-            window.location.href = "/Media";
-        } else {
-            errorToast(res.data.message);
-        }
-}
+
+

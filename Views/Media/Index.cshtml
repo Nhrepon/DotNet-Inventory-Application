@@ -24,7 +24,7 @@
                 @foreach(var file in Model){
                 <div class="cards card rounded shadow-sm">
                     @* <img class="w-100 rounded-top-2" src={URL.createObjectURL(item)} alt="img" /> *@
-                    <span onclick="deleteFile(@file.Id)" class="position-absolute rounded end-0 top-0 me-1 mt-1">
+                    <span onClick="deleteFile(@file.Id)" class="position-absolute rounded end-0 top-0 me-1 mt-1">
                         <i class="bi bi-x-circle bg-light px-1 rounded"></i>
                     </span>
                     <img class=" rounded" title="" src="@file.filePath" onError="(e)=> e.target.style.display = 'none'"/>
@@ -37,3 +37,18 @@
     </div>
 </div>
 
+<script>
+    async function deleteFile(id) {
+        const res = await axios.delete(`Media/Delete/${id}`);
+        if (res.data.status === "success") {
+            await successToast(`${id} deleted successfully!`);
+            setInterval(() => {
+                window.location.reload();
+            } , 1000);
+            //window.location.href = "/Media";
+            //window.location.reload();
+        } else {
+            errorToast(res.data.message);
+        }
+}
+</script>
