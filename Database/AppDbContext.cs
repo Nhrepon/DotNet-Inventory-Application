@@ -10,6 +10,7 @@ namespace Inventory.Database
     public class AppDbContext : DbContext
     {
         public readonly DbContextOptions Options;
+
         public AppDbContext(DbContextOptions options): base(options)
         {
             Options = options;
@@ -18,5 +19,6 @@ namespace Inventory.Database
         public required DbSet<User> users{set; get;}
         public DbSet<Brand> brands{set; get;}
         public DbSet<MediaFile> files{set; get;}
+        public DbSet<Product> products{set; get;}
     }
 }

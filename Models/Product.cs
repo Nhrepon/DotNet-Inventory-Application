@@ -9,12 +9,13 @@
         public string? Color { get; set; }
         public string? Size { get; set; }
         public string? Quantity { get; set; }
+        public string? Price { get; set; }
         public string? Sku { get; set; }
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
         public int UserId { get; set; }
         
-        public required Category category {get; set;}
+        //public required Category category {get; set;}
 
     }
 }
