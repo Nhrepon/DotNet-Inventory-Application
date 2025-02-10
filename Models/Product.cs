@@ -14,8 +14,12 @@
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
         public int UserId { get; set; }
+        public DateTime CreatedAt {get; set;} = DateTime.Now;
+        public DateTime UpdatedAt {get; set;} = DateTime.Now;
         
-        //public required Category category {get; set;}
+        public Category category {get; set;}
+        public Brand brand {get; set;}
+        public User user {get; set;}
 
     }
 }

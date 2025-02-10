@@ -65,12 +65,73 @@ namespace Inventory.Controllers
             }
         }
 
+
+
+
+        [Route("product-list")]
+        public async Task<IActionResult> ProductList(){
+            try
+            {
+                var product = await AppDbContext.products
+                .Include(p => p.category)
+                .Include(p => p.brand)
+                .Include(p => p.user)
+                .OrderByDescending(p => p.Id)
+                .Select(p => new ProductView{
+                    Id = p.Id,
+                    Title = p.Title,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Quantity = p.Quantity,
+                    Color = p.Color,
+                    Size = p.Size,
+                    Sku = p.Sku,
+                    Image = p.Image,
+                    CategoryId = p.CategoryId,
+                    BrandId = p.BrandId,
+                    UserId = p.UserId,
+                    CategoryName = p.category.CategoryName,
+                    BrandName = p.brand.BrandName,
+                    UserName = p.user.UserName,
+                    CreatedAt = p.CreatedAt,
+                    UpdatedAt = p.UpdatedAt
+                })
+                .Skip(5)
+                .Take(3)
+                .ToListAsync();
+                //return Ok(new { status = "success", message = "Product loaded successfully", data = product });
+
+                return View(product);
+            }
+            catch (Exception e)
+            {
+                return Ok(new { status = "error", data = e.Message });
+                //return View(e);
+            }
+        }
+
+
+
+
+
+
+
+
         // GET: ProductController/Edit/5
         [Route("edit/{id}")]
         public ActionResult Edit(int id)
         {
             return View();
         }
+
+
+
+
+
+
+
+
+
 
         // POST: ProductController/Edit/5
         [HttpPut]
@@ -87,12 +148,31 @@ namespace Inventory.Controllers
             }
         }
 
+
+
+
+
+
+
+
+
+
         // GET: ProductController/Delete/5
         [Route("delete/{id}")]
         public ActionResult Delete(int id)
         {
             return View();
         }
+
+
+
+
+
+
+
+
+
+
 
         // POST: ProductController/Delete/5
         [HttpDelete]
