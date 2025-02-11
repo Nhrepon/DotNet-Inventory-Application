@@ -34,18 +34,18 @@ namespace Inventory.Controllers
         public async Task<ActionResult> Create()
         {
             var data = new ProductDto{
-                Product = new Product()
-            };
-            data.BrandOptions =await AppDbContext.brands.Select(b => new SelectListItem{
+                Product = new Product(),
+                BrandOptions = await AppDbContext.brands.Select(b => new SelectListItem{
                 Value = b.Id.ToString(),
                 Text = b.BrandName
-            }).ToListAsync();
-            data.CategoryOptions =await AppDbContext.categories.Select(c => new SelectListItem{
+            }).ToListAsync(),
+            CategoryOptions = await AppDbContext.categories.Select(c => new SelectListItem{
                 Value = c.Id.ToString(),
                 Text = c.CategoryName
-            }).ToListAsync();
+            }).ToListAsync(),
+            Files = await AppDbContext.files.OrderByDescending(m => m.Id).ToListAsync(),
+            };
             //List<MediaFile> files = AppDbContext.files.OrderByDescending(m => m.Id).ToList();
-            data.Files =await AppDbContext.files.OrderByDescending(m => m.Id).ToListAsync();
             //var files = AppDbContext.files.OrderByDescending(m => m.Id).ToList();
             return View(data);
         }
@@ -96,8 +96,8 @@ namespace Inventory.Controllers
                     CreatedAt = p.CreatedAt,
                     UpdatedAt = p.UpdatedAt
                 })
-                .Skip(5)
-                .Take(3)
+                .Skip(0)
+                .Take(5)
                 .ToListAsync();
                 //return Ok(new { status = "success", message = "Product loaded successfully", data = product });
 
@@ -116,35 +116,81 @@ namespace Inventory.Controllers
 
 
 
-
+        [HttpGet]
         // GET: ProductController/Edit/5
         [Route("edit/{id}")]
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var product = await AppDbContext.products
+            .Include(p => p.category)
+            .Include(p => p.brand)
+            .FirstOrDefaultAsync(p => p.Id == id);
+            if(product == null)return NotFound();
+            var productDto = new ProductDto{
+                Product = product,
+                CategoryOptions = await AppDbContext.categories.Select(c => new SelectListItem{
+                Value = c.Id.ToString(),
+                Text = c.CategoryName
+                }).ToListAsync(),
+                BrandOptions = await AppDbContext.brands.Select(b => new SelectListItem{
+                    Value = b.Id.ToString(),
+                    Text = b.BrandName
+                }).ToListAsync(),
+                Files = await AppDbContext.files.OrderByDescending(m => m.Id).ToListAsync(),
+            };
+            
+            return View(productDto);
         }
-
-
-
-
-
-
-
 
 
 
         // POST: ProductController/Edit/5
         [HttpPut]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [Route("{id}")]
+        public async Task<IActionResult> Edit(int id, [FromBody] Product product)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var productData = await AppDbContext.products.FindAsync(id);
+                if(productData == null){
+                    return NotFound();
+                }else if (await AppDbContext.products.AnyAsync(p => p.Title == product.Title && p.Id != id)){
+                    return Ok(new{status = "duplicate", message = "Product Title already exists"});
+                }else{
+                    if(productData.Title != product.Title 
+                    || productData.Description != product.Description 
+                    || productData.Price != product.Price 
+                    || productData.Quantity != product.Quantity 
+                    || productData.Color != product.Color
+                    || productData.Size != product.Size
+                    || productData.Sku != product.Sku
+                    || productData.Image != product.Image
+                    || productData.CategoryId != product.CategoryId
+                    || productData.BrandId != product.BrandId
+                    ){
+                        productData.Title = product.Title;
+                    productData.Description = product.Description;
+                    productData.Price = product.Price;
+                    productData.Quantity = product.Quantity;
+                    productData.Color = product.Color;
+                    productData.Size = product.Size;
+                    productData.Sku = product.Sku;
+                    productData.Image = product.Image;
+                    productData.CategoryId = product.CategoryId;
+                    productData.BrandId = product.BrandId;
+                    productData.UserId = product.UserId;
+                    productData.UpdatedAt = DateTime.Now;
+                    
+                    await AppDbContext.SaveChangesAsync();
+                    return Ok(new{status = "success", message = "Product updated successfully"});
+                    }else{
+                        return Ok(new{status = "error", message = "You didn't change anything to update!"});
+                    }
+                }
             }
-            catch
+            catch(Exception e)
             {
-                return View();
+                return Ok(new {status = "error", message = e.Message});
             }
         }
 

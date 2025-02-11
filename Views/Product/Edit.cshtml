@@ -1,19 +1,23 @@
 ﻿@model ProductDto
 @{
     Layout = "~/Views/Shared/_Dashboard.cshtml";
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Update Product";
 }
 
 
 <div class="container">
     <div class="row">
-        <div class="col-12 text-center mt-2">
-            <h3>Create New Products</h3>
+        <div class="col-12 text-center">
+            <h3>@ViewData["Title"]</h3>
         </div>
     </div>
     <hr />
     <div class="row">
             <div class="col-sm-8 d-flex flex-column gap-3">
+                <div class="form-group">
+                    @* Product Id: <span asp-for="Product.Id" id="id">@Model.Product.Id</span> *@
+                    <input asp-for="Product.Id" id="id" class="form-control" type="text"/>
+                </div>
                 <div class="form-group">
                     <label>Product Title:</label>
                     <input asp-for="Product.Title" id="title" class="form-control" type="text"
@@ -22,7 +26,7 @@
                 <div class="form-group">
                     <label>Product Description:</label>
                     <textarea asp-for="Product.Description" id="description" rows="5" class="form-control" type="text"
-                        placeholder="Product Description" name="" id=""></textarea>
+                        placeholder="Product Description"></textarea>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6 d-flex align-items-center gap-3">
@@ -76,19 +80,20 @@
                     <partial name="../Media/_FilePicker.cshtml" />
                     <input asp-for="Product.Image" id="image" class="form-control" type="text"
                         placeholder="Image path" />
-                    <img id="productImage" src="" alt="Product Image" style="max-width: 200px;"
+                    <img id="productImage" src="@Model.Product.Image" alt="Product Image" style="max-width: 200px;"
                         onError="(e)=> e.target.style.display = 'none'" />
 
                 </div>
             </div>
             <div class="col-12">
-                <button onclick="productSubmit()" class="btn btn-primary my-4">Create</button>
+                <button onClick="productUpdate()" class="btn btn-primary my-4">Update</button>
             </div>
     </div>
 </div>
 
 <script>
-    async function productSubmit() {
+    async function productUpdate() {
+        var id = document.getElementById("id").value;
         var title = document.getElementById("title").value;
         var brand = document.getElementById("brand").value;
         var category = document.getElementById("category").value;
@@ -122,14 +127,14 @@
             "UserId" : 1
             }
 
-            let res = await axios.post("/Product", data);
+            let res = await axios.put(`/Product/${id}`, data, { headers: { 'Content-Type': 'application/json' } });
             if(res.data.status === "success"){
-                successToast("Product created successfully!");
+                successToast("Product Updated successfully!");
                 setInterval(() => {
-                        window.location.href = "/Product/product-list";
-                    }, 1000);
+                    window.location.href = "/Product/product-list";
+                }, 1000);
             }else{
-                errorToast(res.message);
+                errorToast(res.data.message);
             }
     }
     
